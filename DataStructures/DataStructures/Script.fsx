@@ -4,7 +4,7 @@ open System.Diagnostics
 
 let d = 4
 
-let nV = 102400 * 5
+let nV = 1024000 * 5
 
 let xV = 128
 
