@@ -75,15 +75,14 @@ module KDTree =
                 let pSDSq = pSD * pSD
                 match cBMD <= pD, cBMD < pSDSq, pD < pSDSq with
                 | (a, b, c) when (a = true && b = false) || (a = false && c = false) ->
-                    let tmp = if a then cBMN else pN
+                    let (tN, tD) = if a then (cBMN, cBMD) else (pN, pD)
                     let nBMN =
                         if pN.RightChild.IsSome && pSD < 0 then
                             getCandBestMatch pN.RightChild.Value tV2 []
                         elif pN.LeftChild.IsSome && pSD >= 0 then
                             getCandBestMatch pN.LeftChild.Value tV2 []
-                        else tmp
-                    let nBMD = dF tV2 nBMN.NodeVal
-                    if nBMD < cBMD then checkCandBestMatch nBMN tV2 t else checkCandBestMatch tmp tV2 t
+                        else tN
+                    if (dF tV2 nBMN.NodeVal) < tD then checkCandBestMatch nBMN tV2 t else checkCandBestMatch tN tV2 t
                 | true, true, _ -> checkCandBestMatch cBMN tV2 t
                 | _ -> checkCandBestMatch pN tV2 t
         (getCandBestMatch kDT tV []).NodeVal
